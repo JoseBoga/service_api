@@ -1,0 +1,44 @@
+service: my-service-api
+frameworkVersion: '2'
+
+plugins:
+  - serverless-bundle
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 256
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  lambdaHashingVersion: 20201221
+
+functions:
+  createService:
+    handler: src/handler/createService.handler
+    events:
+      - http:
+          method: POST
+          path: 'create'
+          authorizer: ${self:custom.cognitoAuthorizer}
+  getServices:
+    handler: src/handler/getServices.handler
+    events:
+      - http:
+          method: GET
+          path: 'services/{id}'
+          authorizer: ${self:custom.cognitoAuthorizer}
+  healthCheck:
+    handler: src/handler/healthCheck.handler
+    events:
+      - http:
+          method: GET
+          path: 'healthCheck/{id}'
+  runJobs:
+    handler: src/handler/runJobs.handler
+    events:
+      - schedule: cron(0/2 * ? * MON-FRI *)
+
+
+custom:
+  cognitoAuthorizer:
+    arn: arn:aws:cognito-idp:us-east-1:410308471289:userpool/us-east-1_c2HqHIEZF
