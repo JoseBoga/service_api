@@ -33,10 +33,10 @@ functions:
       - http:
           method: GET
           path: 'healthCheck/{id}'
-  runJobs:
-    handler: src/handler/runJobs.handler
-    events:
-      - schedule: cron(0/2 * ? * MON-FRI *)
+  # runJobs:
+  #   handler: src/handler/runJobs.handler
+  #   events:
+  #     - schedule: cron(0/2 * ? * MON-FRI *)
 
 
 custom:
