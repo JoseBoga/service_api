@@ -13,32 +13,67 @@ provider:
   lambdaHashingVersion: 20201221
 
 functions:
+  getServices:
+    handler: src/handlers/services/getServices.handler
+    events:
+      - http:
+          method: GET
+          path: 'services'
+          authorizer: ${self:custom.cognitoAuthorizer}
+
+  getServiceById:
+    handler: src/handlers/services/getServiceById.handler
+    events:
+      - http:
+          method: GET
+          path: 'service/{id}'
+          authorizer: ${self:custom.cognitoAuthorizer}
+
   createService:
-    handler: src/handler/createService.handler
+    handler: src/handlers/services/createService.handler
     events:
       - http:
           method: POST
           path: 'create'
           authorizer: ${self:custom.cognitoAuthorizer}
-  getServices:
-    handler: src/handler/getServices.handler
-    events:
-      - http:
-          method: GET
-          path: 'services/{id}'
-          authorizer: ${self:custom.cognitoAuthorizer}
-  healthCheck:
-    handler: src/handler/healthCheck.handler
-    events:
-      - http:
-          method: GET
-          path: 'healthCheck/{id}'
+
+# Notifications
+  # getNotifications:
+  #   handler: src/handler/notifications/getNotifications.handler
+  #   events:
+  #     - http:
+  #         method: GET
+  #         path: 'notifications'
+  #         authorizer: ${self:custom.cognitoAuthorizer}
+
+  # updateNotificationById:
+  #   handler: src/handler/notifications/updateNotification.handler
+  #   events:
+  #     - http:
+  #         method: PUT
+  #         path: 'notifications/{id}'
+  #         authorizer: ${self:custom.cognitoAuthorizer}
+
+  # removeNotificationById:
+  #   handler: src/handler/notifications/removeNotification.handler
+  #   events:
+  #     - http:
+  #         method: DELETE
+  #         path: 'notification/{id}'
+  #         authorizer: ${self:custom.cognitoAuthorizer}
+
+  # runFiveMinutesJob:
+  #   handler: src/jobs/runFiveMinutesJob.handler
+    # events:
+    #   - schedule: cron(0/2 * ? * MON-FRI *)
+
+
   # runJobs:
   #   handler: src/handler/runJobs.handler
-  #   events:
-  #     - schedule: cron(0/2 * ? * MON-FRI *)
+    # events:
+    #   - schedule: cron(0/2 * ? * MON-FRI *)
 
 
 custom:
   cognitoAuthorizer:
-    arn: arn:aws:cognito-idp:us-east-1:410308471289:userpool/us-east-1_c2HqHIEZF
+    arn: arn:aws:cognito-idp:us-east-1:410308471289:userpool/us-east-1_ydbHG1X2O
